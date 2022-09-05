@@ -1,0 +1,30 @@
+#searchWindow{
+    width:600px;
+    margin: 0 auto;  /* 自身居中*/
+    text-align: center;  /* 孩子居中*/
+    padding: 1px;
+}
+#reviewWindow{
+    width:600px;
+    margin: 0 auto;  /* 自身居中*/
+    text-align: center;  /* 孩子居中*/
+    padding: 1px;
+}
+#centerWindow{
+    width:600px;
+    height:700px;
+    overflow-y: auto;
+    margin: 0 auto;  /* 自身居中*/
+    border: 1px solid grey;
+    padding: 1px;
+}
+
+#aButton{
+    background-color: #e8e8e8;
+}
+#bButton{
+    background-color: #e8e8e8;
+}
+#cButton{
+    background-color: #e8e8e8;
+}

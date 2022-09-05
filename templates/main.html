@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+
+    <!-- flask args to js -->
+    <script>
+        var args = {{args|tojson}};
+        var pattern = args["pattern"];
+        var reviewList = args["reviewList"];
+        var reviewIndex = -1;
+        var curReview = null;
+    </script>
+
+    <!-- jquery -->
+    <!--    <script src="../static/jquery-ui-1.12.1/external/jquery/jquery.js"></script>-->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- jquery ui-->
+    <link rel="stylesheet" href="/static/jquery-ui-1.12.1/jquery-ui.css">
+    <script src="/static/jquery-ui-1.12.1/jquery-ui.js"></script>
+
+    <!-- oxford dict-->
+    <script type="text/javascript" charset="utf-8" src="/static/oxford9/oxford9.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/static/oxford9/oxford9.css" />
+
+    <!-- my css -->
+    <link rel="stylesheet" type="text/css" href="/static/css/my.css" />
+
+    <!--  渲染引擎-->
+    <script type="text/javascript"  src="/static/mark-render/mark_render.js"></script>
+    <script type="text/javascript"  src="/static/mark-render/labels.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/mark-render/labels.css" />
+
+    <!-- 工具-->
+    <script type="text/javascript"  src="/static/js/tools.js"></script>
+
+    <!-- 我的js -->
+    <script type="text/javascript" src="/static/js/html_element_func.js"></script>
+    <script type="text/javascript"  src="/static/js/flask_interface.js"></script>
+    <script type="text/javascript"  src="/static/js/event.js"></script>
+
+    <!-- 初始化js -->
+    <script type="text/javascript"  src="/static/js/init.js"></script>
+</head>
+<body>
+    <div id="searchWindow">
+        <input id="searchInput" type="text" value="abandon">
+        <button id="searchButton">查询</button>
+    </div>
+    <div id="reviewWindow">
+        <button id="aButton">忘了</button>
+        <button id="bButton">一般</button>
+        <button id="cButton">熟练</button>
+        <button id="answerButton">答案</button>
+        <button id="nextButton">继续</button>
+    </div>
+    <div id="centerWindow">
+
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,63 @@
+*{
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+div.label{
+    border-left: 3px solid ghostwhite;
+    margin-left: 10px;
+    padding-left: 5px;
+}
+
+/*sLabel*/
+.sLabelSpan{
+    color: #0088DD;
+    font-weight: 700;
+    font-size: 150%;
+}
+
+/*pLabel*/
+.soundmarkSpan{
+    color: #045fb4;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+/*mLabel*/
+div.mLabel{
+    border-left: 3px solid #9b9b9b;
+    margin-left: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-left: 5px;
+}
+
+/*dLabel*/
+.posSpan{
+    background-color: #0088DD;
+    border-radius: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 3px;
+    color: white;
+}
+
+/*eLabel*/
+div.eLabel{
+    border-left: 3px solid #9b9b9b;
+}
+.reference{
+    background-color: #9b9b9b;
+    color: white;
+}
+
+/*vLabel*/
+div.vLabel{
+    margin-left: 0px;
+    padding-left: 0px;
+    border-left: 0px;
+}
+div.vLabel video{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
