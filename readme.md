@@ -24,7 +24,7 @@
 
 # 运行
 - 运行`UI.py`即可。然后根据提示，访问`http://127.0.0.1:5001/view/`（字典）或`http://127.0.0.1:5001/review/`（复习单词）。
-- 当然你可以从零开始运行（即/dict/目录下啥都没有），所有的词项你需要自己添加。但有一个基础词典可能更加方便。用户可以基于[词典抽取](www.baidu .com)项目来获得牛津词典第九版，把对应的sqlite文件放到dict/entry.sqlite即可。
+- 当然你可以从零开始运行（即/dict/目录下啥都没有），所有的词项你需要自己添加。但有一个基础词典可能更加方便。用户可以基于[词典抽取](https://github.com/Zhuo-Ren/Oxford9Extraction)项目来获得牛津词典第九版，把此项目中的`/static/oxford9`目录和`/dict/entry.sqlite`文件copy到本项目中（路径不变）即可。为了方便，本项目已经包含上述目录，但完整的`/dict/entry.sqlite`太大，本项目中只放了一个部分版（字典大概到abandon...）。想要完整的就去[词典抽取](https://github.com/Zhuo-Ren/Oxford9Extraction)项目中找。
 
 # 原理
 * 使用自己写的dbsql库来实现对不同数据库类型的封装。

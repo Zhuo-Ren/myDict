@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Optima';
-    src: local('Optima_LT_Medium.eot?#iefix') format('embedded-opentype'), local('../font/Optima_LT_Medium.ttf'),local('../static/font/Optima LT Medium.ttf'),url('Optima_LT_Medium.ttf'),url('Optima LT Medium.ttf');
+    src: local('Optima_LT_Medium.eot?#iefix') format('embedded-opentype'), local('../font/Optima_LT_Medium.ttf'),local('../static/oxford9/font/Optima LT Medium.ttf'),url('Optima_LT_Medium.ttf'),url('Optima LT Medium.ttf');
     font-weight: normal;
     font-style: normal;
 }
@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: 'Optima';
-    src: local('../static/font/Optima_LT_Medium_Italic.ttf'),local('../static/font/Optima LT Medium Italic.ttf'),local('../static/font/Optima_LT_Medium_Italic.ttf'),local('../static/font/Optima LT Medium Italic.ttf');
+    src: local('../static/oxford9/font/Optima_LT_Medium_Italic.ttf'),local('../static/oxford9/font/Optima LT Medium Italic.ttf'),local('../static/oxford9/font/Optima_LT_Medium_Italic.ttf'),local('../static/oxford9/font/Optima LT Medium Italic.ttf');
     font-weight: normal;
     font-style: italic;
 }
@@ -16,21 +16,21 @@
 /*
 @font-face {
     font-family: 'Optima';
-    src: local('../static/font/Optima_LT_Demi_Bold.ttf'),local('../static/font/Optima LT Demi Bold.ttf');
+    src: local('../static/oxford9/font/Optima_LT_Demi_Bold.ttf'),local('../static/oxford9/font/Optima LT Demi Bold.ttf');
     font-weight: bold;
     font-style: normal;
 }*/
 /*
 @font-face {
     font-family: 'Optima Italic';
-    src: local('../static/font/Optima_LT_Demi_Bold_Italic.ttf'),local('../static/font/Optima LT Demi Bold Italic.ttf');
+    src: local('../static/oxford9/font/Optima_LT_Demi_Bold_Italic.ttf'),local('../static/oxford9/font/Optima LT Demi Bold Italic.ttf');
     font-weight: normal;
     font-style: italic;
 }*/
 /*
 @font-face {
     font-family: 'Optima';
-    src: local('../static/font/Optima_LT_Bold.ttf'),local('../static/font/Optima LT Bold.ttf');
+    src: local('../static/oxford9/font/Optima_LT_Bold.ttf'),local('../static/oxford9/font/Optima LT Bold.ttf');
     font-weight: bolder;
     font-style: normal;
 }*/
@@ -38,21 +38,21 @@
 /*
 @font-face {
     font-family: 'Optima';
-    src: local('../static/font/Optima_LT_Bold_Italic.ttf'),local('../static/font/Optima LT Bold Italic.ttf');
+    src: local('../static/oxford9/font/Optima_LT_Bold_Italic.ttf'),local('../static/oxford9/font/Optima LT Bold Italic.ttf');
     font-weight: 700;
     font-style: italic;
 }*/
 
 @font-face {
     font-family: 'Optima';
-    src: local('Optima_LT_Bold.eot?#iefix') format('embedded-opentype'),local('../static/font/Optima_LT_Bold.ttf'),local('../static/font/Optima LT Bold.ttf'),local('../static/font/Optima_LT_Bold.ttf'),local('../static/font/Optima LT Bold.ttf');
+    src: local('Optima_LT_Bold.eot?#iefix') format('embedded-opentype'),local('../static/oxford9/font/Optima_LT_Bold.ttf'),local('../static/oxford9/font/Optima LT Bold.ttf'),local('../static/oxford9/font/Optima_LT_Bold.ttf'),local('../static/oxford9/font/Optima LT Bold.ttf');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Optima';
-    src: local('../static/font/Optima_LT_Black_Italic.ttf'),local('../static/font/Optima LT Black Italic.ttf'),local('../static/font/Optima_LT_Black_Italic.ttf'),local('../static/font/Optima LT Black Italic.ttf');
+    src: local('../static/oxford9/font/Optima_LT_Black_Italic.ttf'),local('../static/oxford9/font/Optima LT Black Italic.ttf'),local('../static/oxford9/font/Optima_LT_Black_Italic.ttf'),local('../static/oxford9/font/Optima LT Black Italic.ttf');
     font-weight: bold;
     font-style: italic;
 }
@@ -62,7 +62,7 @@
 
 
 
-@font-face{font-family:'oalecd9';src:local("../static/font/oalecd9.ttf");font-weight:400;font-style:normal}
+@font-face{font-family:'oalecd9';src:local("../static/oxford9/font/oalecd9.ttf");font-weight:400;font-style:normal}
 
 * {
   word-wrap: break-word!important;/*自动wrap长词*/
