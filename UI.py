@@ -3,7 +3,8 @@ from typing import Dict, List, Tuple, Union  # for type hinting
 import datetime as datetime
 from storage_sqlite import StorageSqlite as Storage
 from config import config
-from sm2 import MemoGroup, SM2
+from memo_manage import MemoGroup
+from sm2 import SM2
 import pickle
 import os
 

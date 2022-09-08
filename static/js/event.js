@@ -53,6 +53,9 @@ function searchButtonClick(){
             // 保存标记文本
             let showDiv = $("#showDiv");
             showDiv.attr("markText", r["MyDict"]);
+            // 换行
+            let br = $("<br/>");
+            showDiv.prepend(br);
             // myDict的编辑按钮
             let editButton = $("<button>编辑</button>");
             editButton.css("float", "right");
