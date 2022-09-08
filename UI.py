@@ -3,6 +3,15 @@ from typing import Dict, List, Tuple, Union  # for type hinting
 import datetime as datetime
 from storage_sqlite import StorageSqlite as Storage
 from config import config
+from sm2 import MemoGroup, SM2
+import pickle
+import os
+
+SM2.Time = True
+SM2.REPEAT = True
+SM2.LOG = True
+
+review_data_path = "dict/review.pkl"
 
 def ui():
     """
@@ -19,14 +28,6 @@ def ui():
     @app.route('/view/', methods=["GET"])
     def view():
         return render_template("main.html", args={"pattern": "view"})
-
-    @app.route('/review/', methods=["GET"])
-    def review():
-        review_list = [
-            {"id": 1, "spelling": "abase", "displayStrategy": "listening"},
-            {"id": 9, "spelling": "abandon", "displayStrategy": "all"},
-        ];
-        return render_template("main.html", args={"pattern": "review", "reviewList": review_list})
 
     @app.route('/searchentry', methods=["POST"])
     def searchentry():
@@ -59,126 +60,84 @@ def ui():
         else:
             return jsonify(r)
 
+    @app.route('/review/', methods=["GET"])
+    def review():
+        if os.path.exists(review_data_path):
+            f = open(review_data_path, 'rb')
+            memo_group = pickle.load(f)
+            f.close()
+        else:
+            memo_group = MemoGroup()
+        on_test_keys = memo_group.get_on_test_keys()
+        review_list = [memo_group[k].item_info for k in on_test_keys]
+        return render_template("main.html", args={"pattern": "review", "reviewList": review_list})
+
+    @app.route('/addreview', methods=["POST"])
+    def addreview():
+        try:
+            # 参数解析
+            spelling = request.form.get("spelling")
+            display_strategy = request.form.get("displayStrategy")
+            #
+            if os.path.exists(review_data_path):
+                f = open(review_data_path, 'rb')
+                memo_group = pickle.load(f)
+                f.close()
+            else:
+                memo_group = MemoGroup()
+            #
+            id = spelling + "-" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f")
+            new_sm2_obj = SM2({"id": id, "spelling":spelling, "display_strategy":display_strategy})
+            memo_group.add(new_sm2_obj)
+            #
+            f = open(review_data_path, 'wb')
+            pickle.dump(memo_group, f, -1)
+            f.close()
+        except Exception as e:
+            return jsonify(str(e))
+        else:
+            return jsonify("success")
+
     @app.route('/savescore', methods=["POST"])
     def savescore():
-        # 参数解析
-        review_id = request.form.get("reviewId")
-        review_score = request.form.get("reviewScore")
+        try:
+            # 参数解析
+            review_id = request.form.get("reviewId")
+            review_score = request.form.get("reviewScore")
 
-        # xxx
-        r = True
-
-        # 如果保存成功
-        if r == True:
-            return jsonify("success")
-        # 如果没找到entry
+            # 读取记忆库
+            if os.path.exists(review_data_path):
+                f = open(review_data_path, 'rb')
+                memo_group = pickle.load(f)
+                f.close()
+            else:
+                memo_group = MemoGroup()
+            # 检索记忆库
+            if review_id not in memo_group:
+                return jsonify("不存在的记忆项。")
+            else:
+                cur_item = memo_group[review_id]
+                cur_item.review(float(review_score))
+            # 保存记忆库
+            f = open(review_data_path, 'wb')
+            pickle.dump(memo_group, f, -1)
+            f.close()
+        except Exception as e:
+            pass
         else:
-            return jsonify(r)
+            return jsonify("success")
 
-
-
-    #
-    # @app.route('/viewwww/', methods=["POST"])
-    # def viewwww():
-    #     """
-    #     展示entry页面。
-    #
-    #     :return:
-    #     """
-    #     # 参数解析
-    #     spelling = request.args.get("spelling")
-    #     display_strategy = request.args.get("display_strategy")
-    #
-    #     # 查询entry
-    #     entry = Storage.get_entry(spelling)
-    #
-    #     # 如果找到entry
-    #     if entry != {}:
-    #         html = entry_dict[entry]['html']
-    #         raw = entry_dict[entry]['html_raw']
-    #         if entry in memorize_dict:
-    #             memo_obj_list = memorize_dict[entry]
-    #         else:
-    #             memo_obj_list = []
-    #         return render_template("main.html",
-    #                                entry=spelling,
-    #                                raw=html,
-    #                                html=html,
-    #                                memoObjList=memo_obj_list,
-    #                                showType="view")
-    #     # 如果没找到entry
-    #     else:
-    #         return render_template("main.html",
-    #                                entry=spelling,
-    #                                raw=html,
-    #                                html=html,
-    #                                memoObjList=memo_obj_list,
-    #                                showType="view")
-    #
-    #
-    #
-    #
-    # @app.route('/re/', methods=["GET"])
-    # def re():
-    #     """
-    #     In the 'review' page, user can review entries. This function update the
-    #     memorize_dict and calc a entry list that should be reviewed. A small group of
-    #     entries, which are to be reviewed in current round, are selected from this list
-    #     in random way. This group of entry are returned to frontend.
-    #
-    #     :return: A rendered 'review' page, with a info dict about the entry to be
-    #     reviewed in current round.
-    #     """
-    #     entry = request.args.get("q")
-    #     html = entry_dict[entry]['html']
-    #     raw = entry_dict[entry]['html_raw']
-    #     if entry in memorize_dict:
-    #         memo_obj_list = memorize_dict[entry]
-    #     else:
-    #         memo_obj_list = []
-    #     return render_template("main.html",
-    #                            entry=entry,
-    #                            raw=html,
-    #                            html=html,
-    #                            memoObjList=memo_obj_list)
-    #
-    # @app.route('/edithtml', methods=["POST"])
-    # def edit_html():
-    #     """
-    #     In 'view' page, user can edit entry by edit the html. This function deal with
-    #     the "entry html changing" require by save the changed entry into pkl file.
-    #
-    #     :return:
-    #     """
-    #     # save the new html_raw
-    #     entry = request.form.get("entry")
-    #     entry_dict[entry]['html_raw'] = request.form.get("raw")
-    #     entry_dict[entry]['html'] = raw_to_html(entry, entry_dict[entry]['html_raw'])
-    #     # save into pkl file
-    #     with open(entry_dict_path, 'wb') as pkl_file:
-    #         cPickle.dump(entry_dict, pkl_file)
-    #     # update the website
-    #     return jsonify(True)
-    #
-    # @app.route('/reviewscore', methods=["POST"])
-    # def reviewscore():
-    #     """
-    #     In 'review' page, after user reviewed a entry, user scores his learning progress.
-    #     This function deal with the 'earning progress scoring' operation.
-    #     :return:
-    #     """
-    #     now = datetime.datetime.now()
-    #     entry = request.form.get("entry")
-    #     score = request.form.get("score")
-    #     score = int(score)
-    #     if not (0 < score < 100):
-    #         raise RuntimeError("score的值不对")
-    #     entry_dict[entry]['test_log'].append([now, score])
-    #     # save into pkl file
-    #     with open(entry_dict_path, 'wb') as pkl_file:
-    #         cPickle.dump(entry_dict, pkl_file)
-    #     # update the website
-    #     return jsonify(True)
+    @app.route('/addentry', methods=["POST"])
+    def addentry():
+        try:
+            # 参数解析
+            spelling = request.form.get("spelling")
+            #
+            Storage.create_entry(spelling, {})
+        except Exception as e:
+            pass
+        else:
+            return jsonify("success")
 
     print("http://127.0.0.1:5001/view/")
     print("http://127.0.0.1:5001/review/")

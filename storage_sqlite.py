@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from dbsql_sqlite import DbSql
+from dbsql.dbsql_sqlite import DbSql
 from storage_api import StorageApi
 
 

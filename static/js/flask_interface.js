@@ -84,3 +84,46 @@ function saveScore(reviewId, reviewScore){
     );
     return r;
 }
+
+
+function addReview(spelling, displayStrategy){
+    // 返回值
+    let r = undefined;
+    // 禁用鼠标（因为是非异步请求）
+    $("body").css("pointer-events", "none");
+    $.post(
+        "/addreview",
+        {
+            spelling: spelling,
+            displayStrategy: displayStrategy
+        },
+        function (data, status) {
+            // 解禁鼠标
+            $("body").css("pointer-events", "auto");
+            //
+            r = data;
+        }
+    );
+    return r;
+}
+
+
+function addEntry(spelling){
+    // 返回值
+    let r = undefined;
+    // 禁用鼠标（因为是非异步请求）
+    $("body").css("pointer-events", "none");
+    $.post(
+        "/addentry",
+        {
+            spelling: spelling
+        },
+        function (data, status) {
+            // 解禁鼠标
+            $("body").css("pointer-events", "auto");
+            //
+            r = data;
+        }
+    );
+    return r;
+}

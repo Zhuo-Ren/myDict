@@ -9,6 +9,13 @@ function searchButtonClick(){
         if (r == "failed"){
             // 显示没找到
             $("#centerWindow").html("没有搜索到。");
+            // 添加词性按钮
+            let addEnrtyButton = $("<button id='addEnrtyButton'>添加词项</button>");
+            $("#centerWindow").append(addEnrtyButton);
+            addEnrtyButton.click(function () {
+                let  r = addEntry(spelling);
+                if(r == "success"){$("#searchButton").click();}
+            });
         }
         // 如果搜到了当前词的释义
         else{
@@ -37,17 +44,18 @@ function searchButtonClick(){
             // 把释义添加到各tab页
             {
                 // myDict页
-                $("#showDiv").append(markRender(r["MyDict"]));
+                if (r["MyDict"]!=null){$("#showDiv").append(markRender(r["MyDict"]));}
                 // oxford9页
-                $("#oxford9Window").html(r["Oxford9"]);
+                if (r["Oxford9"]!=null){$("#oxford9Window").html(r["Oxford9"]);}
                 // oxford9Rest页
-                $("#oxford9RestWindow").html(r["Oxford9Rest"]);
+                if (r["Oxford9Rest"]!=null){$("#oxford9RestWindow").html(r["Oxford9Rest"]);}
             }
             // 保存标记文本
             let showDiv = $("#showDiv");
             showDiv.attr("markText", r["MyDict"]);
             // myDict的编辑按钮
             let editButton = $("<button>编辑</button>");
+            editButton.css("float", "right");
             showDiv.prepend(editButton);
             editButton.click(function(){
                 // 创建editDiv
@@ -77,65 +85,83 @@ function searchButtonClick(){
                 // 隐藏展示区
                 showDiv.css("display","none");
             });
-
+            // myDict的下拉菜单
+            let displayStrategySelection = $("<select id='displayStrategySelection'>\n" +
+                "\n" +
+                "  <option value ='all' selected='selected'>all</option>\n" +
+                "\n" +
+                "  <option value ='listening'>listening</option>\n" +
+                "\n" +
+                "  <option value='spelling'>spelling</option>\n" +
+                "\n" +
+                "</select>");
+            displayStrategySelection.css("width", "300px");
+            showDiv.prepend(displayStrategySelection);
+            // myDict的添加复习按钮
+            let addReviewButton = $("<button id='addReviewButton'>添加复习</button>");
+            showDiv.prepend(addReviewButton);
+            addReviewButton.click(function(){
+                let r = addReview(spelling, $("#displayStrategySelection").val())
+                if (r != "success"){
+                        throw Error(r);
+                }
+            });
         }
 }
 
-
 // nextButton: 单击
 function nextButtonClick(){
-    //let reviewList = $("#reviewWindow").attr("reviewList");
-    //let reviewIndex = $("#reviewWindow").attr("reviewIndex");
-    if (reviewIndex + 1 == reviewList.length){
+    //
+    if (reviewList.length == 0){
+        alert("无需复习，请关闭页面");
+        return;
+    }
+    // 结束上一个
+    if (reviewIndex >= 0){
+        // 上传上一题的得分
+        let score = null;
+        let scoreRadio = $("#scoreRadio")[0];
+        for (let i = 0; i < scoreRadio.length; i++){
+            if (scoreRadio[i].checked){
+                score = scoreRadio[i].value;
+            }
+        }
+        if (score == null){
+            alert("请先选择记忆评分");
+            return;
+        }
+        else{
+            saveScore(Number(score));
+        }
+        // 取消上一题的display strategy
+        unloadCssFile("/static/displayStrategy/"+curReview["display_strategy"]+".css");
+        // 重置上一题的评分按钮
+        $("#aButton")[0].checked = false;
+        $("#bButton")[0].checked = false;
+        $("#cButton")[0].checked = false;
+        saveScore(curReview["id"], score);
+        // 是否结束
+        if (reviewIndex + 1 == reviewList.length){
         alert("复习结束，请关闭页面");
     }
-    else{
-        // 结束上一个
-        if (reviewIndex >= 0){
-            // 取消上一题的display strategy
-            unloadCssFile("/static/displayStrategy/"+curReview["displayStrategy"]+".css");
-            // 重置上一题的评分按钮
-            $("#aButton").css("background-color", "#e8e8e8");
-            $("#bButton").css("background-color", "#e8e8e8");
-            $("#cButton").css("background-color", "#e8e8e8");
-            // 上传得分
-            let score = 5;
-            saveScore(curReview["id"], score);
-        }
-        // 开始下一个
-        {
-            reviewIndex = reviewIndex + 1;
-            curReview = reviewList[reviewIndex];
-            // 加载下一题
-            $("#searchInput").val(curReview["spelling"]);
-            $("#searchButton").click();
-            // 应用下一题的display strategy
-            loadCssFile("/static/displayStrategy/"+curReview["displayStrategy"]+".css");
-        }
-
     }
+    // 开始下一个
+    {
+        reviewIndex = reviewIndex + 1;
+        curReview = reviewList[reviewIndex];
+        // 加载下一题
+        $("#searchInput").val(curReview["spelling"]);
+        $("#searchButton").click();
+        // 应用下一题的display strategy
+        loadCssFile("/static/displayStrategy/"+curReview["display_strategy"]+".css");
+        // 选中下一题的display strategy
+        $("#displayStrategySelection").val(curReview["display_strategy"])
+        $("#displayStrategySelection").attr("disabled", "disabled");
+    }
+
 }
 
 // answerButton: 单击
 function answerButtonClick(){
-    unloadCssFile("/static/displayStrategy/"+curReview["displayStrategy"]+".css");
-}
-
-// aButton: 单击
-function aButtonClick(){
-    $("#aButton").css("background-color", "gray");
-    $("#bButton").css("background-color", "#e8e8e8");
-    $("#cButton").css("background-color", "#e8e8e8");
-}
-// bButton: 单击
-function bButtonClick(){
-    $("#aButton").css("background-color", "#e8e8e8");
-    $("#bButton").css("background-color", "gray");
-    $("#cButton").css("background-color", "#e8e8e8");
-}
-// cButton: 单击
-function cButtonClick(){
-    $("#aButton").css("background-color", "#e8e8e8");
-    $("#bButton").css("background-color", "#e8e8e8");
-    $("#cButton").css("background-color", "gray");
+    unloadCssFile("/static/displayStrategy/"+curReview["display_strategy"]+".css");
 }

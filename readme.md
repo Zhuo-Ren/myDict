@@ -22,8 +22,7 @@
       ```
     - [dbsql](https://github.com/Zhuo-Ren/dbsql.git)和[sm2](https://github.com/Zhuo-Ren/sm2)是我自己写的工具包
 
-# 功能
-## 字典
+# 运行
 - 运行`UI.py`即可。
 
 # 原理
@@ -40,7 +39,3 @@
   和上边的dbsql不同，这里的存储方式是针对entry的，设计了字段等定制化信息，
   所以是项目内，而不是三方包。
   storage_api.py中是接口类。storage_sqlite.py使用sqlite数据库实现了这个接口类。
-  
-  
-# todo
-UI.py 38行

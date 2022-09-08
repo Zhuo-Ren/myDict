@@ -20,19 +20,6 @@ $(function(){
         $("#answerButton").click(function () {
             answerButtonClick();
         });
-
-        // aButton: 单击
-        $("#aButton").click(function () {
-            aButtonClick();
-        });
-        // bButton: 单击
-        $("#bButton").click(function () {
-            bButtonClick();
-        });
-        // cButton: 单击
-        $("#cButton").click(function () {
-            cButtonClick();
-        });
     }
 
     // display strategy
@@ -43,6 +30,10 @@ $(function(){
         }
         else if (pattern == "review"){
             loadCssFile("/static/css/review.css");
+            //
+            $("#aButton")[0].checked = false;
+            $("#bButton")[0].checked = false;
+            $("#cButton")[0].checked = false;
             // 保存复习信息
             $("#reviewWindow").attr("reviewList", reviewList);
             $("#reviewWindow").attr("reviewIndex", reviewIndex);
