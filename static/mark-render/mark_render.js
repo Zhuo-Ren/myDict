@@ -121,6 +121,8 @@ function renderOne(lineList){
         case "#d":{return dRender(lineList);break;}
         case "#e":{return eRender(lineList);break;}
         case "#v":{return vRender(lineList);break;}
+        case "#a":{return aRender(lineList);break;}
+        case "#t":{return tRender(lineList);break;}
         default: {return noneRender(lineList);break;}
     }
 }

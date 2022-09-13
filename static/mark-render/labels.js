@@ -16,11 +16,9 @@ function noneRender(lineList) {
     r.addClass("noneLabel");
     r.html(rest);
     // 添加子元素
-    if (lineList.length > 2){
-        let childrenLineList = lineList.slice(1,lineList.length);
-        let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
-        r.append(childrenElementList);
-    }
+    let childrenLineList = lineList.slice(1,lineList.length);
+    let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
+    r.append(childrenElementList);
     //
     return r;
 }
@@ -57,6 +55,7 @@ function sRender(lineList) {
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
     r.append(childrenElementList);
+    //
     return r;
 }
 function pRender(lineList) {
@@ -108,6 +107,7 @@ function pRender(lineList) {
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
     r.append(childrenElementList);
+    //
     return r;
 }
 function mRender(lineList) {
@@ -140,6 +140,7 @@ function mRender(lineList) {
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
     r.append(childrenElementList);
+    //
     return r;
 }
 function dRender(lineList) {
@@ -184,6 +185,7 @@ function dRender(lineList) {
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
     r.append(childrenElementList);
+    //
     return r;
 }
 function eRender(lineList) {
@@ -222,6 +224,7 @@ function eRender(lineList) {
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
     r.append(childrenElementList);
+    //
     return r;
 }
 function vRender(lineList) {
@@ -313,10 +316,140 @@ function vRender(lineList) {
         }
 
     }
-
     // 添加child元素
     if (lineList.length > 1){
         throw Error("v标签不应该有孩子");
     }
+    return r;
+}
+function aRender(lineList) {
+    let headLine = lineList[0];
+    let headIndent = headLine.match(/^ */)[0].length;
+    // 解析headline
+        let rest = headLine;
+        // label
+        let labelMatch = headLine.match(/^\s*#\S+\s*/);
+        let label = "";
+        if (labelMatch != null){
+            label = labelMatch[0];
+            rest = headLine.slice(label.length, headLine.length);
+            label = label.trim();
+            if (label != "#a"){throw Error("输入aRender的不是a标签");}
+        }
+        else{throw Error("输入aRender的不是a标签");}
+        // tag
+        let tagMatch = rest.match(/@@[^@]*/);
+        if (tagMatch != null){
+            let tagList = rest.match(/@@[^@]*/g);
+            // 处理tag
+            rest = rest.slice(0, tagMatch.index);
+        }
+        // url start end
+        let url = "";
+        let start = null;
+        let end = null;
+        {
+            let hashMatch = rest.match(/(?<=(?:.mp4|.mp3))#/);
+            // 无#的情况
+            if (hashMatch == null){
+                url = rest;
+            }
+            // 有#的情况
+            else{
+                let hashIndex = hashMatch.index;
+                url = rest.slice(0, hashIndex);
+                rest = rest.slice(hashIndex+1, rest.length);
+                let dashMatch = rest.match(/-/);
+                // 时间段的情况，例如： d/a.mp4#130-140
+                if (dashMatch != null){
+                    let dashIndex = dashMatch.index;
+                    start = rest.slice(0, dashIndex);
+                    end = rest.slice(dashIndex+1, rest.length);
+                }
+                // 时间点的情况，例如： d/a.mp4#130
+                else{
+                    start = rest;
+                }
+            }
+        }
+    // 创建head元素
+    let r = $("<div style=\"text-align:left\"> \n" +
+        "        <audio id=\"video1\" width=\"420\" controls>\n" +
+        "            <source src=\"/static/video/" + url + "\" type=\"video/mp4\">\n" +
+        "            您的浏览器不支持 HTML5 video 标签。\n" +
+        "        </audio>\n" +
+        "    </div> ");
+    r.addClass("label");
+    r.addClass("aLabel");
+    // 时间戳控制
+    {
+        let loop = false;
+        let autoplay = true; // 暂不支持，详见https://www.jianshu.com/p/caf9f159cf87
+        let myAudio=r.children("audio")[0];
+        // init
+        if (start != null){myAudio.currentTime = start;}
+        // event
+        {
+            // 时间点
+            if ((start != null) && (end == null)){
+                myAudio.ontimeupdate = function (){
+                    if(myAudio.currentTime<start){
+                        myAudio.currentTime = start;
+                        if (!loop){myAudio.pause();}
+                    }
+                }
+            }
+            // 时间段
+            else if((start != null) && (end != null)){
+                myAudio.ontimeupdate = function (){
+                    if(myAudio.currentTime>end || myAudio.currentTime<start){
+                        myAudio.currentTime = start;
+                        if (!loop){myAudio.pause();}
+                    }
+                }
+            }
+        }
+
+    }
+    // 添加child元素
+    if (lineList.length > 1){
+        throw Error("a标签不应该有孩子");
+    }
+    return r;
+}
+function tRender(lineList) {
+    let headLine = lineList[0];
+    let headIndent = headLine.match(/^ */)[0].length;
+    // 解析headline
+        let rest = headLine;
+        // label
+        let labelMatch = headLine.match(/^\s*#\S+\s*/);
+        let label = "";
+        if (labelMatch != null){
+            label = labelMatch[0];
+            rest = headLine.slice(label.length, headLine.length);
+            label = label.trim();
+            if (label != "#t"){throw Error("输入tRender的不是t标签");}
+        }
+        else{throw Error("输入tRender的不是t标签");}
+        // tag
+        let tagMatch = rest.match(/@@[^@]*/);
+        if (tagMatch != null){
+            let tagList = rest.match(/@@[^@]*/g);
+            // 处理tag
+            rest = rest.slice(0, tagMatch.index);
+        }
+    // 创建head元素
+    let p = $("<p></p>");
+    p.html(rest);
+    let r = $("<div></div>");
+    r.addClass("label");
+    r.addClass("tLabel");
+    r.append(p);
+    // 添加child元素
+    let childrenLineList = lineList.slice(1,lineList.length);
+    let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
+    r.append(childrenElementList);
+    //
     return r;
 }

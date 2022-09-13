@@ -59,5 +59,17 @@ div.vLabel{
 div.vLabel video{
     margin-top: 0px;
     margin-bottom: 0px;
+    width:100%
+}
+/*aLabel*/
+div.aLabel{
+    margin-left: 0px;
+    padding-left: 0px;
+    border-left: 0px;
+}
+div.aLabel audio{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width:100%
 }
 

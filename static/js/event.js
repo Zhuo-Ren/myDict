@@ -65,7 +65,7 @@ function searchButtonClick(){
                 let editDiv = $("<div></div>");
                 $("#myDictWindow").append(editDiv);
                 // 创建editArea
-                let editArea = $("<textarea cols='90' rows='60'></textarea>");
+                let editArea = $("<textarea cols='70' rows='60'></textarea>");
                 editArea.html(showDiv.attr("markText"));
                 editDiv.append(editArea);
                 // 创建cancelButton
@@ -93,9 +93,13 @@ function searchButtonClick(){
                 "\n" +
                 "  <option value ='all' selected='selected'>all</option>\n" +
                 "\n" +
-                "  <option value ='listening'>listening</option>\n" +
+                "  <option value='reading'>认reading</option>\n" +
                 "\n" +
-                "  <option value='spelling'>spelling</option>\n" +
+                "  <option value='speaking'>读speaking</option>\n" +
+                "\n" +
+                "  <option value='spelling'>拼spelling</option>\n" +
+                "\n" +
+                "  <option value ='listening'>听listening</option>\n" +
                 "\n" +
                 "</select>");
             displayStrategySelection.css("width", "300px");
