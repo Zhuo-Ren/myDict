@@ -32,6 +32,11 @@ div.mLabel{
 }
 
 /*dLabel*/
+div.dLabel{
+    margin-left: 0px;
+    padding-left: 0px;
+    border-left: 0px;
+}
 .posSpan{
     background-color: #0088DD;
     border-radius: 3px;
@@ -73,3 +78,12 @@ div.aLabel audio{
     width:100%
 }
 
+/*rLabel*/
+div.rLabel{
+    border: 1px red solid;
+}
+
+/*lLabel*/
+div.lLabel{
+    border: 1px blue solid;
+}

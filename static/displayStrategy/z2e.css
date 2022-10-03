@@ -1,9 +1,9 @@
-.slabel{
+.label{
     visibility: hidden;
 }
-.pLabel{
-    visibility: visible;
+.en{
+    visibility: hidden;
 }
-.mlabel{
+.zh{
     visibility: visible;
 }

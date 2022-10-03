@@ -2,7 +2,28 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
-      <paths name="JiDian-nlpgroup-Barhom2019Cuda90">
+      <paths name="JiDian-nlpgroup-Barhom2019">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="JiDian-nlpgroup-spacy">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="JiDian-xuyang-myDict">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/xuyang/myDict" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="JiDian/nlpgroup/3_PyTorch">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

@@ -101,6 +101,8 @@ function searchButtonClick(){
                 "\n" +
                 "  <option value ='listening'>听listening</option>\n" +
                 "\n" +
+                "  <option value ='z2e'>中译英Z2E</option>\n" +
+                "\n" +
                 "</select>");
             displayStrategySelection.css("width", "300px");
             showDiv.prepend(displayStrategySelection);

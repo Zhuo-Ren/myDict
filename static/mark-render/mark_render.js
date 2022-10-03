@@ -37,7 +37,7 @@ function markRender(markText) {
     // 分行
     let lineList = markText.split("\n");
     //
-    let htmlElementList = renderMulti(lineList, 0);
+    let htmlElementList = renderMulti(lineList,0);
     //
     return htmlElementList;
 }
@@ -123,6 +123,8 @@ function renderOne(lineList){
         case "#v":{return vRender(lineList);break;}
         case "#a":{return aRender(lineList);break;}
         case "#t":{return tRender(lineList);break;}
+        case "#r":{return rRender(lineList);break;}
+        case "#l":{return lRender(lineList);break;}
         default: {return noneRender(lineList);break;}
     }
 }

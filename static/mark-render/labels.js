@@ -4,17 +4,31 @@ function noneRender(lineList) {
     // 解析headline
         let rest = headLine;
         //  tag
-        let tagMatch = rest.match(/@[^@]*/);
+        let tagList = [];
+        let tagMatch = rest.match(/@@[^@]*/);
         if (tagMatch != null){
-            let tagList = rest.match(/@[^@]*/g);
-            // 处理tag
+            tagList = rest.match(/@@[^@]*/g);
+            for (let curTagIndex = 0; curTagIndex < tagList.length; curTagIndex++){
+                let curTag = tagList[curTagIndex];
+                curTag = curTag.slice(2, curTag.length);
+                tagList[curTagIndex] = curTag;
+            }
             rest = rest.slice(0, tagMatch.index);
         }
     // 添加头元素
     let r = $("<span></span>");
-    r.addClass("label");
-    r.addClass("noneLabel");
-    r.html(rest);
+    {
+        // 固定类
+        r.addClass("label");
+        r.addClass("noneLabel");
+        // Tag类
+        for (let curTagIndex = 0; curTagIndex < tagList.length; curTagIndex++){
+            let curTag = tagList[curTagIndex];
+            r.addClass(curTag);
+        }
+        // 内容
+        r.html(rest);
+    }
     // 添加子元素
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
@@ -446,6 +460,97 @@ function tRender(lineList) {
     r.addClass("label");
     r.addClass("tLabel");
     r.append(p);
+    // 添加child元素
+    let childrenLineList = lineList.slice(1,lineList.length);
+    let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
+    r.append(childrenElementList);
+    //
+    return r;
+}
+
+function rRender(lineList) {
+    let headLine = lineList[0];
+    let headIndent = headLine.match(/^ */)[0].length;
+    // 解析headline
+        let rest = headLine;
+        // label
+        let labelMatch = headLine.match(/^\s*#\S+\s*/);
+        let label = "";
+        if (labelMatch != null){
+            label = labelMatch[0];
+            rest = headLine.slice(label.length, headLine.length);
+            label = label.trim();
+            if (label != "#r"){throw Error("输入rRender的不是r标签");}
+        }
+        else{throw Error("输入rRender的不是r标签");}
+        // tag
+        let tagMatch = rest.match(/@@[^@]*/);
+        if (tagMatch != null){
+            let tagList = rest.match(/@@[^@]*/g);
+            // 处理tag
+            rest = rest.slice(0, tagMatch.index);
+        }
+    // 创建head元素
+    let p = $("<p></p>");
+    p.html(rest);
+    let r = $("<div></div>");
+    r.addClass("label");
+    r.addClass("rLabel");
+    r.append(p);
+    // 添加child元素
+    let childrenLineList = lineList.slice(1,lineList.length);
+    let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
+    r.append(childrenElementList);
+    //
+    return r;
+}
+
+function lRender(lineList) {
+    let headLine = lineList[0];
+    let headIndent = headLine.match(/^ */)[0].length;
+    // 解析headline
+        let rest = headLine;
+        // label
+        let labelMatch = headLine.match(/^\s*#\S+\s*/);
+        let label = "";
+        if (labelMatch != null){
+            label = labelMatch[0];
+            rest = headLine.slice(label.length, headLine.length);
+            label = label.trim();
+            if (label != "#l"){throw Error("输入lRender的不是l标签");}
+        }
+        else{throw Error("输入lRender的不是l标签");}
+        // tag
+        let tagMatch = rest.match(/@@[^@]*/);
+        if (tagMatch != null){
+            let tagList = rest.match(/@@[^@]*/g);
+            // 处理tag
+            rest = rest.slice(0, tagMatch.index);
+        }
+    // 创建head元素
+    let r = $("<div></div>");
+    r.addClass("label");
+    r.addClass("lLabel");
+    // 添加嵌套元素
+    {
+        // 当前词
+        let spelling = rest.replace(/(^\s*)|(\s*$)/g, "");
+        // 请求当前词的释义
+        let response = searchEntry(spelling);
+        // 根据返回进行处理
+        {
+            let nestedElementList = [];
+            // 如果没有搜到当前词的释义
+            if (response == "failed"){
+                nestedElementList = [$("<div>lLabel检索失败。</div>>")]
+            }
+            // 如果搜到了当前词的释义
+            else {
+                nestedElementList = markRender(response["MyDict"]);
+            }
+            r.append(nestedElementList);
+        }
+    }
     // 添加child元素
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);

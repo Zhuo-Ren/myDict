@@ -1,7 +1,9 @@
-.label{
+.slabel{
     visibility: visible;
 }
-
 .pLabel{
     visibility: hidden;
+}
+.mlabel{
+    visibility: visible;
 }

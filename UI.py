@@ -5,6 +5,7 @@ from storage_sqlite import StorageSqlite as Storage
 from config import config
 from memo_manage import MemoGroup
 from sm2 import SM2
+import random
 import pickle
 import os
 
@@ -71,6 +72,7 @@ def ui():
             memo_group = MemoGroup()
         on_test_keys = memo_group.get_on_test_keys()
         review_list = [memo_group[k].item_info for k in on_test_keys]
+        random.shuffle(review_list)
         return render_template("main.html", args={"pattern": "review", "reviewList": review_list})
 
     @app.route('/addreview', methods=["POST"])
@@ -140,8 +142,8 @@ def ui():
         else:
             return jsonify("success")
 
-    print("http://127.0.0.1:5001/view/")
-    print("http://127.0.0.1:5001/review/")
-    app.run(debug=True, port=5001)
+    print("http://127.0.0.1:5000/view/")
+    print("http://127.0.0.1:5000/review/")
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
 ui()

@@ -45,6 +45,7 @@
 * 词项内容的编写使用了一套我自己设计的标记文本，类似于markdown。区别在于定制能力，例如#d标签标志一个词性，并用特殊的方式加以可视化。用户可以自己定制：在/static/mark-render/labels.js和labels.css中定义新的标签，并在/static/mark-render/mark_render.js的最末尾注册新标签。一个标记文本案例如:
     ```
     #s apple
+      #t -s apples
     #p [appl:e](名词)@@A
     #p /apple:3/(动词)@@B
     #p /app:/(失爆)
@@ -52,10 +53,12 @@
       #d n.v.
         苹果。 @@zh
         A kind of fruit.  @@en
+        #r 词根词缀或助记法
       #e CET4
         I like apple. @@en
         我喜欢苹果。 @@zh
         #v d/b.mp4#130-133 @@zh
+        #a d/b.mp4#130-133 @@zh
     ```
 * 相比于常见的背单词软件，这个项目的特点是对一个单词可以制定多种复习方式，例如练习拼写就显示音标、词性、词义和例句（本词用~代替），同时隐藏单词本身；例如练习发音就显示拼写、词性、词义和例句，但隐藏音标。用户在字典页面搜索这个词项，然后选择复习策略，最后点击“添加复习”按钮即可。用户可以自定义复习策略：在`/static/displayStrategy`中创建新的css文件来定义新的复习策略；在`/static/js/event.js`中搜索`<option value ='all' selected='selected'>all</option>`，模仿注册新策略。
 
