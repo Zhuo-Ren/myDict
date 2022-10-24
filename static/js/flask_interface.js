@@ -108,6 +108,28 @@ function addReview(spelling, displayStrategy){
 }
 
 
+function delReview(spelling, displayStrategy){
+    // 返回值
+    let r = undefined;
+    // 禁用鼠标（因为是非异步请求）
+    $("body").css("pointer-events", "none");
+    $.post(
+        "/delreview",
+        {
+            spelling: spelling,
+            displayStrategy: displayStrategy
+        },
+        function (data, status) {
+            // 解禁鼠标
+            $("body").css("pointer-events", "auto");
+            //
+            r = data;
+        }
+    );
+    return r;
+}
+
+
 function addEntry(spelling){
     // 返回值
     let r = undefined;

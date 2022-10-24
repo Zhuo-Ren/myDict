@@ -86,7 +86,7 @@ function pRender(lineList) {
             label = label.trim();
             if (label != "#p"){throw Error("输入pRender的不是p标签");}
         }
-        else{throw Error("输入pRender的不是d标签");}
+        else{throw Error("输入pRender的不是p标签");}
         //  tag
         let tagMatch = rest.match(/@[^@]*/);
         if (tagMatch != null){
@@ -431,6 +431,49 @@ function aRender(lineList) {
     }
     return r;
 }
+function iRender(lineList) {
+    let headLine = lineList[0];
+    let headIndent = headLine.match(/^ */)[0].length;
+    // 解析headline
+        let rest = headLine;
+        // label
+        let labelMatch = headLine.match(/^\s*#\S+\s*/);
+        let label = "";
+        if (labelMatch != null){
+            label = labelMatch[0];
+            rest = headLine.slice(label.length, headLine.length);
+            label = label.trim();
+            if (label != "#i"){throw Error("输入iRender的不是f标签");}
+        }
+        else{throw Error("输入iRender的不是i标签");}
+        // tag
+        let tagMatch = rest.match(/@@[^@]*/);
+        if (tagMatch != null){
+            let tagList = rest.match(/@@[^@]*/g);
+            // 处理tag
+            rest = rest.slice(0, tagMatch.index);
+        }
+        // url start end
+        let url = "";
+        {
+            let hashMatch = rest.match(/(?<=(?:.jpg|.png))#/);
+            if (hashMatch == null){
+                url = rest;
+            }
+        }
+    // 创建head元素
+    let r = $("<div style=\"text-align:left\"> \n" +
+        "        <img width=\"200\" src=\"/static/img/" + url + "\">" +
+        "    </div> ");
+    r.addClass("label");
+    r.addClass("iLabel");
+
+    // 添加child元素
+    if (lineList.length > 1){
+        throw Error("i标签不应该有孩子");
+    }
+    return r;
+}
 function tRender(lineList) {
     let headLine = lineList[0];
     let headIndent = headLine.match(/^ */)[0].length;
@@ -447,19 +490,33 @@ function tRender(lineList) {
         }
         else{throw Error("输入tRender的不是t标签");}
         // tag
+        let tagList = [];
         let tagMatch = rest.match(/@@[^@]*/);
         if (tagMatch != null){
-            let tagList = rest.match(/@@[^@]*/g);
-            // 处理tag
+            tagList = rest.match(/@@[^@]*/g);
+            for (let curTagIndex = 0; curTagIndex < tagList.length; curTagIndex++){
+                let curTag = tagList[curTagIndex];
+                curTag = curTag.slice(2, curTag.length);
+                tagList[curTagIndex] = curTag;
+            }
             rest = rest.slice(0, tagMatch.index);
         }
     // 创建head元素
     let p = $("<p></p>");
-    p.html(rest);
     let r = $("<div></div>");
-    r.addClass("label");
-    r.addClass("tLabel");
     r.append(p);
+    {
+        // 固定类
+        r.addClass("label");
+        r.addClass("tLabel");
+        // Tag类
+        for (let curTagIndex = 0; curTagIndex < tagList.length; curTagIndex++){
+            let curTag = tagList[curTagIndex];
+            r.addClass(curTag);
+        }
+        // 内容
+        p.html(rest);
+    }
     // 添加child元素
     let childrenLineList = lineList.slice(1,lineList.length);
     let childrenElementList = renderMulti(childrenLineList, headIndent+indentSpace);
@@ -467,7 +524,6 @@ function tRender(lineList) {
     //
     return r;
 }
-
 function rRender(lineList) {
     let headLine = lineList[0];
     let headIndent = headLine.match(/^ */)[0].length;
@@ -504,7 +560,6 @@ function rRender(lineList) {
     //
     return r;
 }
-
 function lRender(lineList) {
     let headLine = lineList[0];
     let headIndent = headLine.match(/^ */)[0].length;

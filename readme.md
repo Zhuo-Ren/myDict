@@ -42,24 +42,34 @@
   storage_api.py中是接口类。storage_sqlite.py使用sqlite数据库实现了这个接口类。
 * 字典以sqlite的格式存放在dict/entry.sqlite中。复习情况以pkl的格式存放在dict/review.pkl中。
 * sm2文件夹里包含两个包：sm2包是对supermemo2算法的实现（有所改编），memo_manage包则实现对多个sm2实例的统一管理。本项目中的背单词复习策略就是基于上述算法。
-* 词项内容的编写使用了一套我自己设计的标记文本，类似于markdown。区别在于定制能力，例如#d标签标志一个词性，并用特殊的方式加以可视化。用户可以自己定制：在/static/mark-render/labels.js和labels.css中定义新的标签，并在/static/mark-render/mark_render.js的最末尾注册新标签。一个标记文本案例如:
-    ```
-    #s apple
-      #t -s apples
-    #p [appl:e](名词)@@A
-    #p /apple:3/(动词)@@B
-    #p /app:/(失爆)
-    #m
-      #d n.v.
-        苹果。 @@zh
-        A kind of fruit.  @@en
-        #r 词根词缀或助记法
-      #e CET4
-        I like apple. @@en
-        我喜欢苹果。 @@zh
-        #v d/b.mp4#130-133 @@zh
-        #a d/b.mp4#130-133 @@zh
-    ```
+* 词项内容的编写使用了一套我自己设计的标记文本，类似于markdown。区别在于定制能力，例如#d标签标志一个词性，并用特殊的方式加以可视化。用户可以自己定制：在/static/mark-render/labels.js和labels.css中定义新的标签，并在/static/mark-render/mark_render.js的最末尾注册新标签。
+    * 一个标记文本案例如:
+        ```
+        #s apple
+          #t -s apples （t标签就是<p></p>,t是text的缩写。相比于none标签，这俩一个换行一个不换行）
+        #p [appl:e](名词)@@A
+        #p /apple:3/(动词)@@B
+        #p /app:/(失爆)
+        #m
+          #d n.v.
+            苹果。 @@zh
+            A kind of fruit.  @@en
+            #i dog.jpg  （图片，放在static/img下）
+            #r 词根词缀或助记法
+              #l -al l标签是嵌套其他词项，l是link的缩写。
+          #e CET4
+            I like apple. @@en
+            我喜欢苹果。 @@zh
+            #v d/b.mp4#130-133 @@zh （视频，放在static/video下）
+            #a d/b.mp3#130-133 @@zh （音频，放在static/video下）
+        ```
+    * 一个翻译文案如：
+        ```
+        #e 背三句
+          My grandfather really has a green thumb.  @@en
+          我爷爷很擅长园艺。 @@zh
+            #t have a green thumb=have green fingers 擅长园艺
+        ```
 * 相比于常见的背单词软件，这个项目的特点是对一个单词可以制定多种复习方式，例如练习拼写就显示音标、词性、词义和例句（本词用~代替），同时隐藏单词本身；例如练习发音就显示拼写、词性、词义和例句，但隐藏音标。用户在字典页面搜索这个词项，然后选择复习策略，最后点击“添加复习”按钮即可。用户可以自定义复习策略：在`/static/displayStrategy`中创建新的css文件来定义新的复习策略；在`/static/js/event.js`中搜索`<option value ='all' selected='selected'>all</option>`，模仿注册新策略。
 
 * 用户有空的时候就打开复习页面，复习页面会基于复习算法（就是上边说的那个supermemo2变种）来输出你要复习的内容。

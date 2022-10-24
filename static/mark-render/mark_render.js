@@ -122,6 +122,7 @@ function renderOne(lineList){
         case "#e":{return eRender(lineList);break;}
         case "#v":{return vRender(lineList);break;}
         case "#a":{return aRender(lineList);break;}
+        case "#i":{return iRender(lineList);break;}
         case "#t":{return tRender(lineList);break;}
         case "#r":{return rRender(lineList);break;}
         case "#l":{return lRender(lineList);break;}

@@ -162,6 +162,11 @@ class SM2(list):
             return self[-1]["plan_time"]
 
     def get_proficiency(self):
-        i = self[-2]["interval"].days
-        if i > 365: return 1
-        else: return pow(i/365, 0.5)  # 开方
+        if self[-2]["interval"] == -1:
+            return 0
+        else:
+            i = self[-2]["interval"].days
+            if i > 365:
+                return 1
+            else:
+                return pow(i/365, 0.5)  # 开方

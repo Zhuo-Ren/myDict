@@ -104,15 +104,37 @@ function searchButtonClick(){
                 "  <option value ='z2e'>中译英Z2E</option>\n" +
                 "\n" +
                 "</select>");
+            let proficiency = r["proficiency"];
+            let options = displayStrategySelection.children("option");
+            for (let i=0; i<options.length; i++){
+                let cur_option = $(options[i]);
+                let cur_value = cur_option.val();
+                if (cur_value in proficiency){
+                    let t = cur_option.text();
+                    let p = String(proficiency[cur_value]).slice(0, 4);
+                    cur_option.text(t+"    ("+p+")");
+                }
+            }
             displayStrategySelection.css("width", "300px");
             showDiv.prepend(displayStrategySelection);
             // myDict的添加复习按钮
-            let addReviewButton = $("<button id='addReviewButton'>添加复习</button>");
+            let addReviewButton = $("<button id='addReviewButton'>添加/删除复习</button>");
             showDiv.prepend(addReviewButton);
             addReviewButton.click(function(){
-                let r = addReview(spelling, $("#displayStrategySelection").val())
-                if (r != "success"){
-                        throw Error(r);
+                let selected = $("#displayStrategySelection").val();
+                selected = $("#displayStrategySelection").children("[value="+selected+"]").text();
+                let response = "0";
+                if (selected == "all"){
+                    alert("all不能被添加到复习计划")
+                }else if(selected.indexOf("(") == -1){
+                    // 添加
+                    response = addReview(spelling, $("#displayStrategySelection").val());
+                }else{
+                    // 删除
+                    response = delReview(spelling, $("#displayStrategySelection").val());
+                }
+                if (response != "success"){
+                    throw Error(response);
                 }
             });
         }

@@ -41,6 +41,14 @@ def ui():
 
         # 如果找到entry
         if entry != {}:
+            if os.path.exists(review_data_path):
+                f = open(review_data_path, 'rb')
+                memo_group = pickle.load(f)
+                f.close()
+            else:
+                memo_group = MemoGroup()
+            sm2_obj_list = memo_group.get(key=None, target={"spelling": spelling})
+            entry["proficiency"] = {i.item_info["display_strategy"]: i.get_proficiency() for i in sm2_obj_list}
             return jsonify(entry)
         # 如果没找到entry
         else:
@@ -92,6 +100,32 @@ def ui():
             id = spelling + "-" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f")
             new_sm2_obj = SM2({"id": id, "spelling":spelling, "display_strategy":display_strategy})
             memo_group.add(new_sm2_obj)
+            #
+            f = open(review_data_path, 'wb')
+            pickle.dump(memo_group, f, -1)
+            f.close()
+        except Exception as e:
+            return jsonify(str(e))
+        else:
+            return jsonify("success")
+
+    @app.route('/delreview', methods=["POST"])
+    def delreview():
+        try:
+            # 参数解析
+            spelling = request.form.get("spelling")
+            display_strategy = request.form.get("displayStrategy")
+            #
+            if os.path.exists(review_data_path):
+                f = open(review_data_path, 'rb')
+                memo_group = pickle.load(f)
+                f.close()
+            else:
+                memo_group = MemoGroup()
+            #
+            id_list = memo_group.get(key="id", target={"spelling":spelling, "display_strategy":display_strategy})
+            for cur_id in id_list:
+                del memo_group[cur_id]
             #
             f = open(review_data_path, 'wb')
             pickle.dump(memo_group, f, -1)
